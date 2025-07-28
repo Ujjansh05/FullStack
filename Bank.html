@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the modal backdrop to have a blur effect */
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        /* Custom transition for smooth modal appearance */
+        .modal {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 flex items-center justify-center min-h-screen">
+
+    <!-- Main Banking Card -->
+    <div class="w-full max-w-md mx-4 bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
+        
+        <!-- Header -->
+        <div class="text-center">
+            <h1 class="text-2xl font-bold text-slate-800 dark:text-white">Your Account</h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Welcome back!</p>
+        </div>
+
+        <!-- Balance Display -->
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl p-6 text-center shadow-lg shadow-indigo-500/40 transform hover:scale-105 transition-transform duration-300">
+            <p class="text-sm font-medium uppercase tracking-wider opacity-80">Current Balance</p>
+            <p id="balance-display" class="text-4xl sm:text-5xl font-bold tracking-tight mt-2">$5,000.00</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button id="deposit-btn" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all duration-200 flex items-center justify-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                <span>Deposit</span>
+            </button>
+            <button id="withdraw-btn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all duration-200 flex items-center justify-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+                <span>Withdraw</span>
+            </button>
+        </div>
+        <div id="message-area" class="text-center text-sm font-medium text-slate-600 dark:text-slate-300 h-5"></div>
+
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="transaction-modal" class="fixed inset-0 flex items-center justify-center bg-slate-900 bg-opacity-50 modal-backdrop z-50 hidden opacity-0 scale-95">
+        <div class="modal bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 w-full max-w-sm mx-4 transform">
+            <h2 id="modal-title" class="text-2xl font-bold text-center text-slate-800 dark:text-white mb-6"></h2>
+            
+            <!-- Amount Input -->
+            <div>
+                <label for="amount-input" class="text-sm font-medium text-slate-600 dark:text-slate-400">Amount</label>
+                <div class="relative mt-1">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="text-slate-500 dark:text-slate-400 sm:text-sm">$</span>
+                    </div>
+                    <input type="number" id="amount-input" class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block pl-7 pr-4 py-2.5" placeholder="0.00">
+                </div>
+            </div>
+
+            <!-- Action Buttons for Modal -->
+            <div class="mt-8 grid grid-cols-2 gap-4">
+                <button id="cancel-btn" class="w-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-600 dark:hover:bg-slate-500 text-slate-800 dark:text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">Cancel</button>
+                <button id="confirm-btn" class="w-full text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Element References ---
+        const balanceDisplay = document.getElementById('balance-display');
+        const depositBtn = document.getElementById('deposit-btn');
+        const withdrawBtn = document.getElementById('withdraw-btn');
+        const messageArea = document.getElementById('message-area');
+        
+        const modal = document.getElementById('transaction-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const amountInput = document.getElementById('amount-input');
+        const confirmBtn = document.getElementById('confirm-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+
+        // --- State ---
+        let currentBalance = 5000.00;
+        let currentMode = ''; // 'deposit' or 'withdraw'
+
+       
+        function formatCurrency(amount) {
+            return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        }
+
+        /**
+         * Updates the balance display on the UI.
+         */
+        function updateBalanceDisplay() {
+            balanceDisplay.textContent = formatCurrency(currentBalance);
+        }
+        
+        /**
+         * Displays a message to the user for a short duration.
+         * @param {string} text - The message to display.
+         * @param {boolean} isError - If true, formats the message as an error.
+         */
+        function showMessage(text, isError = false) {
+            messageArea.textContent = text;
+            messageArea.className = isError 
+                ? 'text-center text-sm font-medium text-red-500 h-5' 
+                : 'text-center text-sm font-medium text-green-500 h-5';
+            
+            // Clear the message after 3 seconds
+            setTimeout(() => {
+                messageArea.textContent = '';
+            }, 3000);
+        }
+        function openModal(mode) {
+            currentMode = mode;
+            amountInput.value = ''; // Clear previous input
+            
+            if (mode === 'deposit') {
+                modalTitle.textContent = 'Deposit Funds';
+                confirmBtn.textContent = 'Confirm Deposit';
+                confirmBtn.className = 'w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200';
+            } else {
+                modalTitle.textContent = 'Withdraw Funds';
+                confirmBtn.textContent = 'Confirm Withdraw';
+                confirmBtn.className = 'w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200';
+            }
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'scale-95');
+            }, 10);
+        }
+
+        /**
+         * Closes the transaction modal.
+         */
+        function closeModal() {
+            modal.classList.add('opacity-0', 'scale-95');
+            // Wait for the transition to finish before hiding the element
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // --- Event Handlers ---
+
+        /**
+         * Handles the confirmation of a transaction.
+         */
+        function handleConfirm() {
+            const amount = parseFloat(amountInput.value);
+
+            // Input validation
+            if (isNaN(amount) || amount <= 0) {
+                showMessage('Please enter a valid positive amount.', true);
+                return;
+            }
+
+            if (currentMode === 'deposit') {
+                currentBalance += amount;
+                showMessage(`Successfully deposited ${formatCurrency(amount)}.`);
+            } else if (currentMode === 'withdraw') {
+                if (amount > currentBalance) {
+                    showMessage('Insufficient funds for this withdrawal.', true);
+                    return;
+                }
+                currentBalance -= amount;
+                showMessage(`Successfully withdrew ${formatCurrency(amount)}.`);
+            }
+
+            updateBalanceDisplay();
+            closeModal();
+        }
+
+        // --- Event Listeners ---
+        depositBtn.addEventListener('click', () => openModal('deposit'));
+        withdrawBtn.addEventListener('click', () => openModal('withdraw'));
+        
+        cancelBtn.addEventListener('click', closeModal);
+        confirmBtn.addEventListener('click', handleConfirm);
+
+        // Allow closing the modal by clicking the backdrop
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Allow submitting with the Enter key in the input field
+        amountInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                handleConfirm();
+            }
+        });
+
+        updateBalanceDisplay();
+
+    </script>
+</body>
+</html>
