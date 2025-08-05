@@ -1,0 +1,136 @@
+/* styles.css */
+
+/* --- General Body Styles --- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- UPDATED Header Styles --- */
+header {
+  background-color: #ffffff;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* NEW: Styles for the top part of the header (title and toggle) */
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px; /* Creates space between the title and the nav links */
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* --- UPDATED Navigation Bar Styles --- */
+nav {
+  /* The nav is now inside the header, so it doesn't need its own background */
+  text-align: center;
+  border-top: 1px solid #eee; /* A subtle line to separate nav from title */
+  padding-top: 15px; /* Space above the nav links */
+}
+
+nav a {
+  color: #333; /* Links are dark text on light background now */
+  padding: 10px 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  background-color: #f0f2f5; /* A light grey hover effect */
+  border-radius: 5px;
+}
+
+/* --- Main Content Styles (Unchanged) --- */
+main {
+  padding: 20px;
+}
+
+main h2 {
+  color: #444;
+}
+
+.info-container {
+  margin-top: 20px;
+}
+
+.info-box {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.info-box h3 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+.stat {
+  font-size: 28px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* --- Footer Styles (Unchanged) --- */
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #e9ecef;
+  border-top: 1px solid #ddd;
+  color: #666;
+}
+
+
+/* --- UPDATED Dark Mode Styles --- */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode header {
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #333;
+}
+
+body.dark-mode nav {
+  border-top: 1px solid #333; /* Darker border for the separator line */
+}
+
+body.dark-mode nav a {
+  color: #e0e0e0;
+}
+
+body.dark-mode nav a:hover {
+  background-color: #444;
+}
+
+body.dark-mode main h2 {
+  color: #ccc;
+}
+
+body.dark-mode .info-box {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+}
+
+body.dark-mode .stat {
+  color: #58a6ff;
+}
+
+body.dark-mode footer {
+  background-color: #1e1e1e;
+  border-top: 1px solid #333;
+  color: #888;
+}
