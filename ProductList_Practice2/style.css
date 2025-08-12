@@ -1,0 +1,79 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(#678F8A);
+  color: #fff;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* Filter dropdown */
+.filter {
+  margin-bottom: 30px;
+}
+
+.filter label {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+#categoryFilter {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  transition: border 0.3s;
+}
+
+#categoryFilter:hover,
+#categoryFilter:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+/* Product list grid */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* Individual product card */
+.product {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.product h3 {
+  font-size: 1.2rem;
+  color: #2980b9;
+  margin-bottom: 10px;
+}
+
+.product p {
+  font-size: 0.95rem;
+  color: #555;
+}

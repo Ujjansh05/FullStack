@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Filter Page</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Product List</h1>
+  <div class="filter">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter">
+      <option value="all">All</option>
+      <option value="shoes">Shoes</option>
+      <option value="shirts">Shirts</option>
+      <option value="gadgets">Gadgets</option>
+    </select>
+  </div>
+
+  <div class="product-list" id="productList">
+    <div class="product" data-category="shoes">
+      <h3>Running Shoes</h3>
+      <p>Comfortable running shoes.</p>
+    </div>
+    <div class="product" data-category="shirts">
+      <h3>Casual Shirt</h3>
+      <p>Stylish and breathable shirt.</p>
+    </div>
+    <div class="product" data-category="gadgets">
+      <h3>Smartwatch</h3>
+      <p>Track your activity and notifications.</p>
+    </div>
+    <div class="product" data-category="shoes">
+      <h3>Hiking Boots</h3>
+      <p>Durable boots for outdoor adventures.</p>
+    </div>
+    <div class="product" data-category="shirts">
+      <h3>Formal Shirt</h3>
+      <p>Perfect for office wear.</p>
+    </div>
+    <div class="product" data-category="gadgets">
+      <h3>Wireless Earbuds</h3>
+      <p>Great sound and noise cancellation.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
