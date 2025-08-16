@@ -1,0 +1,90 @@
+/* Global styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f6f8;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* Header */
+h2 {
+  margin-top: 20px;
+  font-size: 24px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+/* Drawing frame (border around canvas) */
+.drawing-frame {
+  margin-top: 20px;
+  padding: 20px;
+  border: 4px solid #2c3e50;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  justify-content: center;
+}
+
+.tool-button {
+  font-size: 24px;
+  padding: 8px 12px;
+  background-color: #ecf0f1;
+  border: 2px solid #bdc3c7;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tool-button:hover {
+  background-color: #d0dfe8;
+}
+
+.tool-button.active {
+  background-color: #3498db;
+  color: white;
+  border-color: #2980b9;
+}
+
+/* Erase button special styling */
+.tool-button[data-shape="erase"] {
+  background-color: #fce4ec;
+}
+
+.tool-button[data-shape="erase"].active {
+  background-color: #e91e63;
+  color: white;
+  border-color: #c2185b;
+}
+
+/* SVG canvas */
+svg {
+  background: #ffffff;
+  border-radius: 8px;
+  cursor: crosshair;
+  user-select: none;
+  display: block;
+}
+
+/* Responsive canvas */
+@media (max-width: 850px) {
+  svg {
+    width: 90vw;
+    height: 60vh;
+  }
+}

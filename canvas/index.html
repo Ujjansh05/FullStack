@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVG Drawing Canvas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h2>SVG Drawing Canvas (Click and Drag to Draw Shapes)</h2>
+
+ <div class="drawing-frame">
+  <div class="toolbar">
+    <button data-shape="rectangle" class="tool-button active">🟦</button>
+    <button data-shape="line" class="tool-button">➖</button>
+    <button data-shape="circle" class="tool-button">⚪</button>
+    <button data-shape="erase" class="tool-button">🧽</button>
+  </div>
+  <svg id="drawingCanvas" width="800" height="500"></svg>
+</div>
+
+
+  <script src="script.js"></script>
+</body>
+
+
+</html>
