@@ -1,0 +1,99 @@
+import React, { useState } from 'react';
+
+export default function App() {
+  const initialBooks = [
+    { id: 1, title: 'The Lord of the Rings', author: 'J.R.R. Tolkien' },
+    { id: 2, title: 'The Hobbit', author: 'J.R.R. Tolkien' },
+    { id: 3, title: 'Dune', author: 'Frank Herbert' },
+    { id: 4, title: '1984', author: 'George Orwell' },
+    { id: 5, title: 'Brave New World', author: 'Aldous Huxley' },
+  ];
+
+  const [books, setBooks] = useState(initialBooks);
+  const [newTitle, setNewTitle] = useState('');
+  const [newAuthor, setNewAuthor] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Adds a new book to the list
+  const handleAddBook = (e) => {
+    e.preventDefault();
+    if (!newTitle.trim() || !newAuthor.trim()) {
+      alert('Please enter both title and author.');
+      return;
+    }
+    const newBook = {
+      id: Date.now(),
+      title: newTitle,
+      author: newAuthor,
+    };
+    setBooks([newBook, ...books]);
+    setNewTitle('');
+    setNewAuthor('');
+  };
+
+  // Removes a book from the list
+  const handleRemoveBook = (idToRemove) => {
+    setBooks(books.filter(book => book.id !== idToRemove));
+  };
+
+  // Filters books based on the search term
+  const filteredBooks = books.filter(book =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    book.author.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div style={{ fontFamily: 'sans-serif', padding: '20px', maxWidth: '600px', margin: '40px auto', backgroundColor: '#f0f4f8', borderRadius: '8px' }}>
+      <h1 style={{ textAlign: 'center', color: '#1a202c' }}>React Book Library</h1>
+
+      {/* Form to add a new book */}
+      <div style={{ marginBottom: '20px', border: '1px solid #e2e8f0', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+        <h2 style={{ color: '#2d3748', borderBottom: '1px solid #e2e8f0', paddingBottom: '10px', marginBottom: '15px' }}>Add a New Book</h2>
+        <form onSubmit={handleAddBook}>
+          <input
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            placeholder="Book Title"
+            style={{ marginRight: '10px', padding: '8px', border: '1px solid #cbd5e0', borderRadius: '4px' }}
+          />
+          <input
+            type="text"
+            value={newAuthor}
+            onChange={(e) => setNewAuthor(e.target.value)}
+            placeholder="Author"
+            style={{ marginRight: '10px', padding: '8px', border: '1px solid #cbd5e0', borderRadius: '4px' }}
+          />
+          <button type="submit" style={{ padding: '8px 15px', backgroundColor: '#4299e1', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Add Book</button>
+        </form>
+      </div>
+
+      {/* Display list of books */}
+      <div style={{ border: '1px solid #e2e8f0', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+        <h2 style={{ color: '#2d3748', borderBottom: '1px solid #e2e8f0', paddingBottom: '10px', marginBottom: '15px' }}>My Books</h2>
+        <input
+          type="text"
+          placeholder="Search books..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ marginBottom: '15px', padding: '8px', width: '95%', border: '1px solid #cbd5e0', borderRadius: '4px' }}
+        />
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {filteredBooks.map(book => (
+            <li key={book.id} style={{ borderBottom: '1px solid #e2e8f0', padding: '10px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <strong style={{ color: '#2d3748' }}>{book.title}</strong>
+                <br />
+                <span style={{ color: '#718096' }}>by {book.author}</span>
+              </div>
+              <button onClick={() => handleRemoveBook(book.id)} style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: '#f56565', color: 'white', border: 'none', borderRadius: '5px' }}>
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
