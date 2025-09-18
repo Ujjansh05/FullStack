@@ -1,0 +1,154 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+
+const ProductCard = ({ product }) => {
+  const { name, price, inStock, image } = product;
+  const [quantity, setQuantity] = useState(0);
+
+  const handleIncrease = () => {
+    if (inStock) setQuantity((prev) => prev + 1);
+  };
+
+  const handleDecrease = () => {
+    setQuantity((prev) => (prev > 0 ? prev - 1 : 0));
+  };
+
+  const handleAddToCart = () => {
+    if (quantity > 0) {
+      alert(`${quantity} x ${name} added to cart!`);
+    }
+  };
+
+  const stockStatusStyle = inStock
+    ? "text-green-500 font-semibold"
+    : "text-red-500 font-semibold";
+
+  const stockStatusText = inStock ? "In Stock" : "Out of Stock";
+  const canAddToCart = inStock && quantity > 0;
+
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.98 }}
+      className="w-72 bg-gray-800 border border-gray-700 rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300 flex flex-col"
+    >
+      <div className="overflow-hidden">
+        <img
+          className="p-4 rounded-2xl object-cover h-48 w-full transform transition-transform duration-300 hover:scale-110"
+          src={image}
+          alt={`Image of ${name}`}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src =
+              "https://placehold.co/600x400/f8f9fa/343a40?text=Image+Not+Found";
+          }}
+        />
+      </div>
+
+      <div className="px-5 pb-5 flex flex-col flex-grow">
+        <h3 className="text-xl font-semibold tracking-tight text-white mb-2">
+          {name}
+        </h3>
+
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-3xl font-bold text-white">
+            ${price.toFixed(2)}
+          </span>
+          <span className={stockStatusStyle}>{stockStatusText}</span>
+        </div>
+
+        {inStock && (
+          <div className="flex items-center justify-center space-x-4 mb-4">
+            <button
+              onClick={handleDecrease}
+              disabled={quantity === 0}
+              className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            >
+              -
+            </button>
+
+            <motion.span
+              key={quantity}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="text-xl font-medium w-12 text-center text-white"
+            >
+              {quantity}
+            </motion.span>
+
+            <button
+              onClick={handleIncrease}
+              className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 active:scale-95 transition"
+            >
+              +
+            </button>
+          </div>
+        )}
+
+        <button
+          onClick={handleAddToCart}
+          disabled={!canAddToCart}
+          className={`w-full text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition
+            ${
+              canAddToCart
+                ? "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-95"
+                : "bg-gray-500 cursor-not-allowed"
+            }`}
+        >
+          {inStock ? "Add to Cart" : "Notify Me"}
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
+export default function App() {
+  const products = [
+    {
+      id: 1,
+      name: "Wireless Ergonomic Mouse",
+      price: 25.99,
+      inStock: true,
+      image:
+        "https://placehold.co/600x400/e2e8f0/4a5568?text=Mouse",
+    },
+    {
+      id: 2,
+      name: "Backlit Mechanical Keyboard",
+      price: 89.5,
+      inStock: false,
+      image:
+        "https://placehold.co/600x400/dbeafe/1e40af?text=Keyboard",
+    },
+    {
+      id: 3,
+      name: "27-inch 4K UHD Monitor",
+      price: 349.0,
+      inStock: true,
+      image:
+        "https://placehold.co/600x400/d1fae5/065f46?text=Monitor",
+    },
+    {
+      id: 4,
+      name: "Noise-Cancelling Headphones",
+      price: 199.99,
+      inStock: true,
+      image:
+        "https://placehold.co/600x400/fee2e2/991b1b?text=Headphones",
+    },
+  ];
+
+  return (
+    <div className="bg-gray-900 min-h-screen p-8">
+      <h1 className="text-4xl font-bold text-center text-gray-200 mb-10">
+        Featured Products
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </div>
+  );
+}
