@@ -1,0 +1,82 @@
+import React from 'react';
+
+// --- CLASS DEFINITIONS ---
+// It's good practice to define classes outside the component
+// so they aren't redefined on every render.
+
+// Base Person class
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Method to display basic information
+    displayInfo() {
+        return `Name: ${this.name}, Age: ${this.age}`;
+    }
+}
+
+// Subclass for Student, extending Person
+class Student extends Person {
+    constructor(name, age, grade) {
+        super(name, age);
+        this.grade = grade;
+    }
+
+    // Override the parent's displayInfo method
+    displayInfo() {
+        return `${super.displayInfo()}, Grade: ${this.grade}`;
+    }
+}
+
+// Subclass for Teacher, extending Person
+class Teacher extends Person {
+    constructor(name, age, subject) {
+        super(name, age);
+        this.subject = subject;
+    }
+
+    // Override the parent's displayInfo method
+    displayInfo() {
+        return `${super.displayInfo()}, Subject: ${this.subject}`;
+    }
+}
+
+
+// --- REACT COMPONENT ---
+export default function App() {
+    // Create instances of the classes
+    const student1 = new Student('Alice Johnson', 16, '11th');
+    const teacher1 = new Teacher('Mr. David Smith', 42, 'Physics');
+
+    return (
+        <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6 font-sans">
+            <div className="w-full max-w-xl bg-white rounded-xl shadow-lg p-8">
+                <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
+                    Class Inheritance in React
+                </h1>
+
+                {/* Student Details Section */}
+                <div className="mb-6">
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-3 border-b pb-2">
+                        Student Details
+                    </h2>
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                        <p className="text-lg text-blue-800">{student1.displayInfo()}</p>
+                    </div>
+                </div>
+
+                {/* Teacher Details Section */}
+                <div>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-3 border-b pb-2">
+                        Teacher Details
+                    </h2>
+                    <div className="bg-green-50 p-4 rounded-lg">
+                        <p className="text-lg text-green-800">{teacher1.displayInfo()}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
