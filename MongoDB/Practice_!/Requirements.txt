@@ -1,0 +1,4 @@
+mkdir node-mongoose-crud
+cd node-mongoose-crud
+npm init -y
+npm install express mongoose dotenv
